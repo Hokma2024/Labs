@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class Quest2 {
     public static void main(String[] args) {
@@ -29,7 +30,10 @@ public class Quest2 {
         System.out.println("Введите пороговое значение:");
         int threshold = scanner.nextInt();
 
-        // Подсчет количества элементов каждой строки, меньших порогового значения
+        // Создаем вектор B для хранения количества элементов, меньших порогового значения в каждой строке
+        Vector<Integer> B = new Vector<>();
+
+        // Подсчет количества элементов каждой строки, меньших порогового значения, и заполнение вектора B
         for (int i = 0; i < rows; i++) {
             int count = 0;
             for (int j = 0; j < cols; j++) {
@@ -37,7 +41,13 @@ public class Quest2 {
                     count++;
                 }
             }
-            System.out.println("Количество элементов в строке " + (i + 1) + ", меньших " + threshold + ": " + count);
+            B.add(count); // Добавляем значение в вектор B
+        }
+
+        // Вывод вектора B
+        System.out.println("Вектор B (количество элементов в каждой строке, меньших " + threshold + "):");
+        for (int i = 0; i < B.size(); i++) {
+            System.out.println("B[" + i + "] = " + B.get(i));
         }
     }
 }

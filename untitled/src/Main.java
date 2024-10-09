@@ -1,70 +1,70 @@
 import java.util.Arrays;
-import java.util.Scanner;
+import java.util.Random;
 
-public class Main
-{
-    public static void main(String[] args)
-    {
-        Scanner scanner = new Scanner(System.in);
-
-        // Ввод количества элементов массива
-        System.out.print("Введите количество элементов в массиве: ");
-        int n = scanner.nextInt();
-
-        // Создание и заполнение массива
+public class Main {
+    public static void main(String[] args) {
+        // Размер массива
+        int n = 80; // или задайте нужный размер массива
         int[] array = new int[n];
-        double[] array1 = new double[array.length];
-        for (int i = 0; i < n; i++)
-        {
-            array[i] = (int) (Math.random() * (198)) - 99;
-            System.out.println(array[i]);
-        }
+
+        // Заполнение массива случайными значениями от -99 до 99
+        fillArrayWithRandomValues(array);
 
         // Выводим оригинальный массив
         System.out.println("Оригинальный массив: " + Arrays.toString(array));
-        CreateReciprocalFraction(array,array1);
-        //Вывод массива и обратными элементами
-        System.out.println("Массив с обратными элементами: " + Arrays.toString(array1));
-        // Переворачиваем массив
-        reverseArray(array1);
 
-        // Выводим измененный массив
-        System.out.println("Перевернутый массив: " + Arrays.toString(array1));
+        // Создание массива с обратными значениями
+        double[] reciprocalArray = createReciprocalFraction(array);
+
+        // Выводим массив с обратными значениями
+        System.out.println("Массив с обратными значениями: " + Arrays.toString(reciprocalArray));
+
+        // Переворачиваем исходный массив
+        reverseArray(array);
+
+        // Выводим перевернутый массив
+        System.out.println("Перевернутый массив: " + Arrays.toString(array));
     }
 
-
-    public static void CreateReciprocalFraction(int[] array,double[] array1)
-    {
-        try {for (int i = 0; i < array.length; i++) {
-            if (array[i] == 0)
-            {
-                throw new ArithmeticException("Error деление на 0");
-            }
-        }
-            for (int i = 0; i < array1.length; i++) {
-
-                array1[i] = 1 / (double) array[i];
-            }
-        }
-        catch(Exception e) {
-            System.out.println("Error деление на 0");
+    // Метод для заполнения массива случайными значениями от -99 до 99
+    public static void fillArrayWithRandomValues(int[] array) {
+        Random random = new Random();
+        for (int i = 0; i < array.length; i++) {
+            array[i] = random.nextInt(199) - 99; // Генерация чисел от -99 до 99
         }
     }
-    // Метод для переворота массива
-    public static void reverseArray(double[] array1)
-    {
+
+    // Метод для создания массива с обратными значениями
+    public static double[] createReciprocalFraction(int[] array) {
+        double[] reciprocalArray = new double[array.length];
+
+        for (int i = 0; i < array.length; i++) {
+            try {
+                reciprocalArray[i] = 1.0 / array[i];
+                if (Double.isInfinite(reciprocalArray[i])) { // Проверка на бесконечность
+                    throw new ArithmeticException("Деление на ноль");
+                }
+            } catch (ArithmeticException e) {
+                System.out.println("Ошибка: деление на ноль для элемента с индексом " + i);
+                reciprocalArray[i] = 0; // Заменяем значение на 0 при делении на ноль
+            }
+        }
+
+        return reciprocalArray;
+    }
+
+    // Метод для переворота массива на месте
+    public static void reverseArray(int[] array) {
         int left = 0;
-        int right = array1.length - 1;
+        int right = array.length - 1;
 
-        while (left < right)
-        {
-            double temp = array1[left];
-            array1[left] = array1[right];
-            array1[right] = temp;
+        while (left < right) {
+            int temp = array[left];
+            array[left] = array[right];
+            array[right] = temp;
 
             left++;
             right--;
         }
     }
 }
-
